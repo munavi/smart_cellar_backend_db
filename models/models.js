@@ -15,12 +15,12 @@ const Product = sequelize.define('product', {
 })
 
 const Category = sequelize.define('category', {
-    id: {type: DataTypes.INTEGER, primaryKey: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
 })
 
 const StorageLocation = sequelize.define('storage_location', {
-    id: {type: DataTypes.INTEGER, primaryKey: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
 })
 
