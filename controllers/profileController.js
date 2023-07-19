@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-const {Profile} = require('../models/models')
+const {Profile, Country} = require('../models/models')
 const {ApiError} = require('../error/ApiError')
 
 class ProfileController {
@@ -37,7 +37,7 @@ class ProfileController {
 
     async getOne(req, res){
         const {id} = req.params
-        const profile = await Profile.findByPk(id)
+        const profile = await Profile.findByPk(id, {include:[{model: Country, right: true}]})
         return res.json(profile)
     }
 
