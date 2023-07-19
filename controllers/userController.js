@@ -3,9 +3,9 @@ const bcrypt = require('bcrypt')
 const {User} = require('../models/models')
 const jwt = require('jsonwebtoken')
 
-const generateJwt = (id, email, role) => {
+const generateJwt = (id, email) => {
     return jwt.sign(
-        {id, email, role},
+        {id, email},
         process.env.SECRET_KEY,
         {expiresIn: '24h'}
     )
@@ -24,7 +24,7 @@ class UserController {
         }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({email, password: hashPassword})
-        const token = generateJwt(user.id, user.email, user.role)
+        const token = generateJwt(user.id, user.email)
         return res.json({token})
     }
 
@@ -38,12 +38,12 @@ class UserController {
         if (!comparePassword) {
             return next(ApiError.internal('Incorrect password is specified'))
         }
-        const token = generateJwt(user.id, user.email, user.role)
+        const token = generateJwt(user.id, user.email)
         return res.json({token})
     }
 
     async check(req, res, next){
-        const token = generateJwt(req.user.id, req.user.email, req.user.role)
+        const token = generateJwt(req.user.id, req.user.email)
         return res.json({token})
     }
 }
