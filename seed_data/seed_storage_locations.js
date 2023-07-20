@@ -1,4 +1,5 @@
 const { StorageLocation } = require('./../models/models');
+const {User} = require("../models/models");
 
 async function seedStorageLocations() {
     try {
@@ -46,6 +47,7 @@ async function seedStorageLocations() {
             }
         ];
 
+        //await StorageLocation.destroy({truncate: true})
         await StorageLocation.bulkCreate(storageLocationsToAdd);
         console.log('The StorageLocations table has been successfully populated with data.');
     } catch (error) {

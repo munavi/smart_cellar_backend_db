@@ -46,6 +46,15 @@ class ProfileController {
         const profile = await Profile.destroy({where:{id}})
         return res.json(profile)
     }
+
+    async updateOne(req, res){
+        const {id} = req.params
+        const profile = await Profile.update(req.body, {
+            where: {id : id}
+        })
+        return res.json(profile)
+
+    }
 }
 
 module.exports = new ProfileController()

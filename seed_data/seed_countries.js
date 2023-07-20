@@ -1,4 +1,5 @@
 const { Country } = require('./../models/models');
+const {Currency} = require("../models/models");
 
 async function seedCountries() {
     try {
@@ -25,6 +26,7 @@ async function seedCountries() {
             }
         ];
 
+        //await Country.destroy({truncate: true})
         await Country.bulkCreate(countriesToAdd);
         console.log('The Countries table has been successfully populated with data.');
     } catch (error) {

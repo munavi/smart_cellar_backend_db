@@ -12,7 +12,7 @@ async function seedUsers() {
                 password: 'password2',
             }
         ];
-
+        //await User.destroy({truncate: true})
         await User.bulkCreate(usersToAdd);
         console.log('The Users table has been successfully populated with data.');
     } catch (error) {

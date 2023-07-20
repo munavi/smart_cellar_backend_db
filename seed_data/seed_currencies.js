@@ -1,4 +1,5 @@
 const { Currency } = require('./../models/models');
+const {User} = require("../models/models");
 
 async function seedCurrencies() {
     try {
@@ -25,6 +26,7 @@ async function seedCurrencies() {
             }
         ];
 
+        //await Currency.destroy({truncate: true})
         await Currency.bulkCreate(currenciesToAdd);
         console.log('The Currencies table has been successfully populated with data.');
     } catch (error) {
