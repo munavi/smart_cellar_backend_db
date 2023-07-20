@@ -1,19 +1,21 @@
-const seedUsers = require('./seed_users');
-const seedCountries = require('./seed_countries');
-const seedCurrencies = require('./seed_currencies');
-const seedStorageLocations = require('./seed_storage_locations');
-const seedCategories = require("./seed_categories");
 const seedProfiles = require("./seed_profiles");
+const seedProducts = require("./seed_products");
+const seedUsers = require("./seed_users");
+const seedCountries = require("./seed_countries");
+const seedCurrencies = require("./seed_currencies");
+const seedCategories = require("./seed_categories");
+const seedStorageLocations = require("./seed_storage_locations");
 
 async function seedData() {
     try {
-        //await seedUsers()
-        //await seedCountries()
-        //await seedCurrencies()
-        await seedProfiles()
-        await seedStorageLocations()
-        await seedCategories()
+        const createdUsers = await seedUsers();
+        const createdCountries = await seedCountries();
+        const createdCurrencies = await seedCurrencies();
+        const createdCategories = await seedCategories();
+        const createdStorageLocations = await seedStorageLocations();
 
+        await seedProfiles(createdUsers, createdCountries, createdCurrencies);
+        await seedProducts(createdUsers, createdCategories, createdStorageLocations);
 
         console.log('The Seed Data has been successfully populated with data.');
     } catch (error) {

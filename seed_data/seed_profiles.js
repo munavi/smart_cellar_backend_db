@@ -1,15 +1,7 @@
-const { Profile } = require('./../models/models');
-const {User, Country, Currency} = require("../models/models");
-const seedCountries = require("./seed_countries");
-const seedCurrencies = require("./seed_currencies");
-const seedUsers = require("./seed_users");
+const {Profile, User, Country, Currency} = require("../models/models");
 
-async function seedProfiles() {
+async function seedProfiles(createdUsers, createdCountries, createdCurrencies) {
     try {
-
-        const createdUsers = await seedUsers()
-        const createdCountries = await seedCountries()
-        const createdCurrencies = await seedCurrencies()
 
         const profilesToAdd = [
             {

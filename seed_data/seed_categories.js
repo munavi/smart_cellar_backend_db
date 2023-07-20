@@ -36,8 +36,9 @@ async function seedCategories() {
             }
         ];
 
-        await Category.bulkCreate(categoriesToAdd);
+        const createdCategories =await Category.bulkCreate(categoriesToAdd);
         console.log('The Categories table has been successfully populated with data.');
+        return createdCategories;
     } catch (error) {
         console.error('Error filling the Categories table:', error);
     }
