@@ -5,33 +5,28 @@ async function seedCurrencies() {
     try {
         const currenciesToAdd = [
             {
-                id: '1',
                 name: 'EUR',
             },
             {
-                id: '2',
                 name: 'USD',
             },
             {
-                id: '3',
                 name: 'CHY',
             },
             {
-                id: '4',
                 name: 'UAH',
             },
             {
-                id: '5',
                 name: 'KZT',
             }
         ];
 
-        //await Currency.destroy({truncate: true})
-        await Currency.bulkCreate(currenciesToAdd);
+        const createdCurrencies = await Currency.bulkCreate(currenciesToAdd);
         console.log('The Currencies table has been successfully populated with data.');
+        return createdCurrencies;
     } catch (error) {
         console.error('Error filling the Currencies table:', error);
     }
 }
 
-module.exports = seedCurrencies();
+module.exports = seedCurrencies;

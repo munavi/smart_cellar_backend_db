@@ -12,12 +12,13 @@ async function seedUsers() {
                 password: 'password2',
             }
         ];
-        //await User.destroy({truncate: true})
-        await User.bulkCreate(usersToAdd);
+
+        const createdUsers = await User.bulkCreate(usersToAdd);
         console.log('The Users table has been successfully populated with data.');
+        return createdUsers;
     } catch (error) {
         console.error('Error filling the Users table:', error);
     }
 }
 
-module.exports = seedUsers();
+module.exports = seedUsers;
