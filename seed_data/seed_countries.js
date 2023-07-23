@@ -1,5 +1,4 @@
 const { Country } = require('./../models/models');
-const {Currency} = require("../models/models");
 
 async function seedCountries() {
     try {

@@ -1,5 +1,4 @@
 const { Currency } = require('./../models/models');
-const {User} = require("../models/models");
 
 async function seedCurrencies() {
     try {
