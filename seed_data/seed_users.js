@@ -4,6 +4,10 @@ async function seedUsers() {
     try {
         const usersToAdd = [
             {
+                email: 'admin',
+                password: '$2b$05$85rfphiPVJmaVQPpxA6ucOl4vwYJ0CKkH.n8JbLIEkzNtoe7h9AQy',
+            },
+            {
                 email: 'user1@example.com',
                 password: 'password1',
             },
