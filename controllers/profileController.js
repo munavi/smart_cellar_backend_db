@@ -49,11 +49,27 @@ class ProfileController {
     }
 
     async updateOne(req, res){
-        const {id} = req.params
-        const profile = await Profile.update(req.body, {
-            where: {id : id}
-        })
-        return res.json(profile)
+        const { id } = req.params;
+        const { body } = req;
+
+        try {
+            await Profile.update(body, {
+                where: { id: id },
+                // returning: true,
+            });
+
+            const updatedProfile = await Profile.findByPk(id);
+
+            if (!updatedProfile) {
+                return res.status(404).json({ error: 'Profile not found' });
+            }
+
+            return res.json(updatedProfile);
+
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Failed to update profile' });
+        }
 
     }
 }
