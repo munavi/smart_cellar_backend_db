@@ -38,7 +38,9 @@ class ProfileController {
     async getOne(req, res){
         const {id} = req.params
         // const profile = await Profile.findByPk(id, {include:[{model: Country, right: true}]})
-        const profile = await Profile.findByPk(id)
+        const profile = await Profile.findOne({
+            where: {userId : id},
+        });
         return res.json(profile)
     }
 
@@ -54,11 +56,13 @@ class ProfileController {
 
         try {
             await Profile.update(body, {
-                where: { id: id },
+                where: { userId: id },
                 // returning: true,
             });
 
-            const updatedProfile = await Profile.findByPk(id);
+            const updatedProfile = await Profile.findOne({
+                where: {userId : id},
+            });
 
             if (!updatedProfile) {
                 return res.status(404).json({ error: 'Profile not found' });

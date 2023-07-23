@@ -39,7 +39,7 @@ class UserController {
             return next(ApiError.internal('Incorrect password is specified'))
         }
         const token = generateJwt(user.id, user.email)
-        return res.json({token})
+        return res.json({ token, id: user.id });
     }
 
     async check(req, res, next){
