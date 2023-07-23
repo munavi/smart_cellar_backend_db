@@ -56,13 +56,11 @@ class ProfileController {
 
         try {
             await Profile.update(body, {
-                where: { userId: id },
+                where: { id: id },
                 // returning: true,
             });
 
-            const updatedProfile = await Profile.findOne({
-                where: {userId : id},
-            });
+            const updatedProfile = await Profile.findByPk(id);
 
             if (!updatedProfile) {
                 return res.status(404).json({ error: 'Profile not found' });
