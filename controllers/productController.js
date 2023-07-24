@@ -1,5 +1,6 @@
 const {Product, User, Profile} = require('../models/models')
 const {ApiError} = require('../error/ApiError')
+const sequelize = require("sequelize");
 
 class ProductController {
     async create(req, res, next){
@@ -19,6 +20,14 @@ class ProductController {
             const { userId } = req.params;
 
             const products = await Product.findAll({
+                attributes: [
+                    'id',
+                    'name',
+                    'quantity',
+                    'categoryId',
+                    'storageLocationId',
+                    [sequelize.literal(`to_char(Product.date, 'DD-MM-YY')`), 'formattedDate'],
+                    ],
                 where: {userId : userId},
             });
 
