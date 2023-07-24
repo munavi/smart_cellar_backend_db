@@ -26,7 +26,7 @@ class ProductController {
                     'quantity',
                     'categoryId',
                     'storageLocationId',
-                    [sequelize.literal(`to_char(Product.date, 'DD-MM-YY')`), 'formattedDate'],
+                    [sequelize.literal(`to_char(Product.date, 'DD-MM-YY')`), 'date'],
                     ],
                 where: {userId : userId},
             });
