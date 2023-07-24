@@ -4,8 +4,8 @@ const {ApiError} = require('../error/ApiError')
 class ProductController {
     async create(req, res, next){
         try {
-            const {name, date, storageLocationId, categoryId}  = req.body
-            const product = await Product.create({name, date, storageLocationId, categoryId})
+            const {name, quantity, date, categoryId, storageLocationId, userId}  = req.body
+            const product = await Product.create({name, quantity, date, categoryId, storageLocationId, userId})
 
             return res.json(product)
         } catch (e) {

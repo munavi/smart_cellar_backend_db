@@ -16,7 +16,7 @@ const Profile = sequelize.define('profile', {
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false}, // should be unique?
-    counter : {type: DataTypes.INTEGER, defaultValue: 0},
+    quantity : {type: DataTypes.INTEGER, defaultValue: 0},
     date: {type: DataTypes.DATE, allowNull: false},
 })
 
