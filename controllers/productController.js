@@ -1,4 +1,4 @@
-const {Product, User} = require('../models/models')
+const {Product, User, Profile} = require('../models/models')
 const {ApiError} = require('../error/ApiError')
 
 class ProductController {
@@ -13,26 +13,6 @@ class ProductController {
         }
     }
 
-    // async getAll(req, res){
-    //     let {categoryId, storageLocationId, limit, page} = req.query
-    //     page = page || 1
-    //     limit = limit || 20
-    //     let offset = page * limit - limit
-    //     let products;
-    //     if (!categoryId && !storageLocationId) {
-    //         products = await Product.findAndCountAll({limit, offset})
-    //     }
-    //     if (categoryId && !storageLocationId) {
-    //         products = await Product.findAndCountAll({where:{categoryId}, limit, offset})
-    //     }
-    //     if (!categoryId && storageLocationId) {
-    //         products = await Product.findAndCountAll({where:{storageLocationId}, limit, offset})
-    //     }
-    //     if (categoryId && storageLocationId) {
-    //         products = await Product.findAndCountAll({where:{storageLocationId, categoryId}, limit, offset})
-    //     }
-    //     return res.json(products)
-    // }
 
     async getProductsByUserId(req, res, next) {
         try {
@@ -45,15 +25,31 @@ class ProductController {
             return res.json(products);
         } catch (error) {
             console.error('Error fetching products by userId:', error);
-            next(ApiError.internal('Error fetching products by userId'));
+            next(ApiError.badRequest('Error fetching products by userId'));
         }
     }
 
-    // async getOne(req, res){
-    //     const {id} = req.params
-    //     const product = await Product.findByPk(id)
-    //     return res.json(product)
-    // }
+
+    async update(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { body } = req;
+
+            await Product.update(body, {
+                where: { id: id },
+                // returning: true,
+            });
+            const updatedProduct = await Product.findByPk(id);
+
+            if (!updatedProduct) {
+                return res.status(404).json({ error: 'Product not found' });
+            }
+            return res.json(updatedProduct);
+        } catch (error) {
+            console.error('Error updating product:', error);
+            next(ApiError.badRequest('Error updating product'));
+        }
+    }
 
     async removeOne(req, res){
         const {id} = req.params
