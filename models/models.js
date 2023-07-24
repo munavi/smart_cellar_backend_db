@@ -41,19 +41,19 @@ const Country = sequelize.define('country', {
 })
 
 User.hasOne(Profile)
-Profile.belongsTo(User, { through: User })
+Profile.belongsTo(User)
 
 Category.hasMany(Product)
-Product.belongsTo(Category, { through: Category })
+Product.belongsTo(Category)
 
 StorageLocation.hasMany(Product);
-Product.belongsTo(StorageLocation, { through: StorageLocation });
+Product.belongsTo(StorageLocation);
 
-Country.hasOne(Profile)
-Profile.belongsTo(Country, { through: Country })
+Country.hasMany(Profile)
+Profile.belongsTo(Country)
 
-Currency.hasOne(Profile)
-Profile.belongsTo(Currency, { through: Currency })
+Currency.hasMany(Profile)
+Profile.belongsTo(Currency)
 
 User.hasMany(Product)
 Product.belongsTo(User)

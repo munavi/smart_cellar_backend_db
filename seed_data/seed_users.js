@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { User } = require('./../models/models');
 
 async function seedUsers() {
@@ -5,7 +6,7 @@ async function seedUsers() {
         const usersToAdd = [
             {
                 email: 'admin',
-                password: '$2b$05$85rfphiPVJmaVQPpxA6ucOl4vwYJ0CKkH.n8JbLIEkzNtoe7h9AQy',
+                password: '12345',
             },
             {
                 email: 'user1@example.com',
@@ -17,7 +18,16 @@ async function seedUsers() {
             }
         ];
 
-        const createdUsers = await User.bulkCreate(usersToAdd);
+        const hashedUsersToAdd = await Promise.all(usersToAdd.map(async user => {
+            if (!user.password.startsWith('$2b$')) {
+                const saltRounds = 10;
+                const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+                return { ...user, password: hashedPassword };
+            }
+            return user;
+        }));
+
+        const createdUsers = await User.bulkCreate(hashedUsersToAdd);
         console.log('The Users table has been successfully populated with data.');
         return createdUsers;
     } catch (error) {
