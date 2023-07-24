@@ -3,8 +3,7 @@ const router = new Router()
 const productController = require('../controllers/productController')
 
 router.post('/',productController.create)
-router.get('/',productController.getAll)
-router.get('/:id',productController.getOne)
+router.get('/:userId',productController.getProductsByUserId)
 router.delete('/:id',productController.removeOne)
 
 module.exports = router
