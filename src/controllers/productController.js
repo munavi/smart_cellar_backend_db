@@ -1,4 +1,4 @@
-const { Product, User, Profile } = require('../models/models');
+const { Product, User, Profile, Category, StorageLocation} = require('../models/models');
 const { ApiError } = require('../error/ApiError');
 const { Op } = require('sequelize');
 
@@ -14,10 +14,27 @@ class ProductController {
     async create(req, res, next) {
         try {
             const { name, quantity, date, categoryId, storageLocationId, userId } = req.body;
+
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            const category = await Category.findByPk(categoryId);
+            if (!category) {
+                return res.status(404).json({ error: 'Category not found' });
+            }
+
+            const storageLocation = await StorageLocation.findByPk(storageLocationId);
+            if (!storageLocation) {
+                return res.status(404).json({ error: 'Storage Location not found' });
+            }
+
             const product = await Product.create({ name, quantity, date, categoryId, storageLocationId, userId });
+            await product.reload();
             return res.json(product);
-        } catch (e) {
-            next(ApiError.badRequest(e.message));
+        } catch (error) {
+            next(ApiError.badRequest('Error creating product'));
         }
     }
 
