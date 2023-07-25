@@ -15,9 +15,9 @@ const Profile = sequelize.define('profile', {
 
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}, // should be unique?
+    name: {type: DataTypes.STRING, unique: false, allowNull: false}, // should be unique?
     quantity : {type: DataTypes.INTEGER, defaultValue: 0},
-    date: {type: DataTypes.DATE, allowNull: false},
+    date: {type: DataTypes.DATEONLY, allowNull: false},
 })
 
 const Category = sequelize.define('category', {

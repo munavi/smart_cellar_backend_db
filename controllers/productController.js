@@ -26,9 +26,15 @@ class ProductController {
                     'quantity',
                     'categoryId',
                     'storageLocationId',
-                    [sequelize.literal(`to_char(Product.date, 'DD-MM-YY')`), 'date'],
+                    'date'
                     ],
                 where: {userId : userId},
+                order: [['date', 'ASC'],
+                        ['name', 'ASC'],
+                        ['quantity', 'ASC'],
+                        ['categoryId', 'ASC'],
+                        ['storageLocationId', 'ASC']
+                ],
             });
 
             return res.json(products);

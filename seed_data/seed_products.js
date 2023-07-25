@@ -2,7 +2,9 @@ const { Product, User, Category, StorageLocation  } = require('./../models/model
 const faker = require('faker');
 
 function generateRandomProductName() {
-    return faker.commerce.productName();
+    const maxLength = 50;
+    const productName = faker.commerce.productName();
+    return productName.slice(0, maxLength);
 }
 function generateRandomNumber() {
     return Math.floor(Math.random() * 255) + 1;
