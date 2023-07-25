@@ -11,7 +11,7 @@ function generateRandomNumber() {
 }
 
 function generateRandomDate() {
-    const startDate = new Date();
+    const startDate = new Date('2023-07-07');
     const endDate = new Date('2025-05-05');
     const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
     return randomDate.toISOString().split('T')[0];

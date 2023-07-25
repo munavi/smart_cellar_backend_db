@@ -1,30 +1,32 @@
 const {Profile, User, Country, Currency} = require("../models/models");
-
+const faker = require('faker');
 async function seedProfiles(createdUsers, createdCountries, createdCurrencies) {
     try {
+        const profilesToAdd = [];
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
 
-        const profilesToAdd = [
-            {
-                firstname: 'John',
-                lastname: 'Smith',
-                userId: createdUsers[0].id,
-                countryId: createdCountries[0].id,
-                currencyId: createdCurrencies[0].id,
-            },
-            {
-                firstname: 'Emily',
-                lastname: 'Johnson',
-                userId: createdUsers[1].id,
-                countryId: createdCountries[1].id,
-                currencyId: createdCurrencies[1].id,
+        for (const user of createdUsers) {
+            const randomCountry = getRandomItem(createdCountries);
+            const randomCurrency = getRandomItem(createdCurrencies);
 
-            }
-        ];
+            const profile = {
+                firstname: faker.name.firstName(),
+                lastname: faker.name.lastName(),
+                userId: user.id,
+                countryId: randomCountry.id,
+                currencyId: randomCurrency.id,
+            };
+
+            profilesToAdd.push(profile);
+        }
 
         await Profile.bulkCreate(profilesToAdd);
         console.log('The Profiles table has been successfully populated with data.');
     } catch (error) {
         console.error('Error filling the Profiles table:', error);
+        throw error;
     }
 }
 
