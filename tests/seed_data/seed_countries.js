@@ -1,4 +1,4 @@
-const { Country } = require('./../models/models');
+const { Country } = require('../../src/models/models');
 
 async function seedCountries() {
     try {

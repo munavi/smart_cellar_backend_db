@@ -1,4 +1,4 @@
-const { Currency } = require('./../models/models');
+const { Currency } = require('../../src/models/models');
 
 async function seedCurrencies() {
     try {

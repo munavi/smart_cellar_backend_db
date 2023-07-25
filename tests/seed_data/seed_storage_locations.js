@@ -1,4 +1,4 @@
-const { StorageLocation } = require('./../models/models');
+const { StorageLocation } = require('../../src/models/models');
 
 async function seedStorageLocations() {
     try {

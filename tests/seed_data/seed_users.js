@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('./../models/models');
+const { User } = require('../../src/models/models');
 
 async function seedUsers() {
     try {

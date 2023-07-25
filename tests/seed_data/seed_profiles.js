@@ -1,4 +1,4 @@
-const {Profile, User, Country, Currency} = require("../models/models");
+const {Profile, User, Country, Currency} = require("../../src/models/models");
 const faker = require('faker');
 async function seedProfiles(createdUsers, createdCountries, createdCurrencies) {
     try {

@@ -1,4 +1,4 @@
-const { Product, User, Category, StorageLocation  } = require('./../models/models');
+const { Product, User, Category, StorageLocation  } = require('../../src/models/models');
 const faker = require('faker');
 
 function generateRandomProductName() {

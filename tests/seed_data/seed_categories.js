@@ -1,4 +1,4 @@
-const { Category } = require('./../models/models');
+const { Category } = require('../../src/models/models');
 
 async function seedCategories() {
     try {
