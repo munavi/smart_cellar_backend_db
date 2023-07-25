@@ -45,7 +45,7 @@ class ProductController {
             await Product.update(body, {
                 where: { id: id },
             });
-            const updatedProduct = await Product.findById(id);
+            const updatedProduct = await Product.findByPk(id);
 
             if (!updatedProduct) {
                 return res.status(404).json({ error: 'Product not found' });
