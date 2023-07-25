@@ -56,10 +56,21 @@ class ProductController {
         }
     }
 
-    async removeOne(req, res) {
-        const { id } = req.params;
-        const product = await Product.destroy({ where: { id } });
-        return res.json(product);
+    async removeOne(req, res, next) {
+        try {
+            const { id } = req.params;
+            const deletedProduct = await Product.findByPk(id);
+
+            if (!deletedProduct) {
+                return res.status(404).json({ error: 'Product not found' });
+            }
+
+            await Product.destroy({ where: { id } });
+
+            return res.json(deletedProduct.id);
+        } catch (error) {
+            next(ApiError.badRequest('Error deleting product'));
+        }
     }
 }
 
