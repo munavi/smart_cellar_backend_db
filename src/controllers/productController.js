@@ -63,17 +63,15 @@ class ProductController {
                 return res.status(404).json({ error: 'User not found' });
             }
             const productStat = {
-                all: {
-                    countAllCategories: 0,
-                    countAllStorageLocations: 0,
-                    countAllProducts: 0,
-                },
+                countAllCategories: 0,
+                countAllStorageLocations: 0,
+                countAllProducts: 0,
                 byCategory: [],
                 byStorageLocation: [],
             };
-            productStat.all.countAllCategories = await Category.count();
-            productStat.all.countAllStorageLocations = await StorageLocation.count();
-            productStat.all.countAllProducts = await Product.count({ where: { userId: userId } });
+            productStat.countAllCategories = await Category.count();
+            productStat.countAllStorageLocations = await StorageLocation.count();
+            productStat.countAllProducts = await Product.count({ where: { userId: userId } });
 
             const categories = await Category.findAll();
             for (const category of categories) {
