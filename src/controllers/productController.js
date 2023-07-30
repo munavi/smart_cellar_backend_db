@@ -83,7 +83,7 @@ class ProductController {
                 });
             }
 
-            const storageLocations = await Category.findAll();
+            const storageLocations = await StorageLocation.findAll();
             for (const storageLocation of storageLocations) {
                 const countProducts = await Product.count({where: {userId: userId, storageLocationId: storageLocation.id}});
                 productStat.byStorageLocation.push ({
@@ -93,7 +93,7 @@ class ProductController {
                 });
             }
 
-            return res.json({ productStat });
+            return res.json(productStat);
         } catch (error) {
             next(ApiError.badRequest('Error fetching product count'));
         }
