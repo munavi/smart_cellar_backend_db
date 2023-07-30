@@ -56,7 +56,7 @@ class ProductController {
 
     async getCountProducts(req, res, next) {
         try {
-            const { userId, categoryId, storageLocationId } = req.params;
+            const { userId } = req.params;
 
             const user = await User.findByPk(userId);
             if (!user) {
@@ -66,8 +66,8 @@ class ProductController {
                 countAllCategories: 0,
                 countAllStorageLocations: 0,
                 countAllProducts: 0,
-                byCategory: [],
-                byStorageLocation: [],
+                dataByCategory: [],
+                dataByLocation: [],
             };
             productStat.countAllCategories = await Category.count();
             productStat.countAllStorageLocations = await StorageLocation.count();
@@ -76,24 +76,24 @@ class ProductController {
             const categories = await Category.findAll();
             for (const category of categories) {
                 const countProducts = await Product.count({where: {userId: userId, categoryId: category.id}});
-                productStat.byCategory.push ({
+                productStat.dataByCategory.push ({
                     id: category.id,
                     name: category.name,
                     countProducts: countProducts,
                 });
             }
 
-            const storageLocations = await Category.findAll();
+            const storageLocations = await StorageLocation.findAll();
             for (const storageLocation of storageLocations) {
                 const countProducts = await Product.count({where: {userId: userId, storageLocationId: storageLocation.id}});
-                productStat.byStorageLocation.push ({
+                productStat.dataByLocation.push ({
                     id: storageLocation.id,
                     name: storageLocation.name,
                     countProducts: countProducts,
                 });
             }
 
-            return res.json({ productStat });
+            return res.json(productStat);
         } catch (error) {
             next(ApiError.badRequest('Error fetching product count'));
         }
