@@ -54,7 +54,32 @@ class ProductController {
         }
     }
 
-    async update(req, res, next) {
+    async getCountProducts(req, res, next) {
+        try {
+            const { userId, categoryId, storageLocationId } = req.body;
+            let whereClause = {};
+
+            // Build the WHERE clause based on the provided parameters.
+            if (userId) {
+                whereClause.userId = userId;
+            }
+            if (categoryId) {
+                whereClause.categoryId = categoryId;
+            }
+            if (storageLocationId) {
+                whereClause.storageLocationId = storageLocationId;
+            }
+
+            // Count the number of products that match the provided criteria.
+            const count = await Product.count({ where: whereClause });
+
+            return res.json({ count });
+        } catch (error) {
+            next(ApiError.badRequest('Error fetching product count'));
+        }
+    }
+
+     async update(req, res, next) {
         try {
             const { id } = req.params;
             const { body } = req;
