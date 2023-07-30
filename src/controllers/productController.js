@@ -56,24 +56,46 @@ class ProductController {
 
     async getCountProducts(req, res, next) {
         try {
-            const { userId, categoryId, storageLocationId } = req.body;
-            let whereClause = {};
+            const { userId, categoryId, storageLocationId } = req.params;
 
-            // Build the WHERE clause based on the provided parameters.
-            if (userId) {
-                whereClause.userId = userId;
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
             }
-            if (categoryId) {
-                whereClause.categoryId = categoryId;
-            }
-            if (storageLocationId) {
-                whereClause.storageLocationId = storageLocationId;
+            const productStat = {
+                all: {
+                    countAllCategories: 0,
+                    countAllStorageLocations: 0,
+                    countAllProducts: 0,
+                },
+                byCategory: [],
+                byStorageLocation: [],
+            };
+            productStat.all.countAllCategories = await Category.count();
+            productStat.all.countAllStorageLocations = await StorageLocation.count();
+            productStat.all.countAllProducts = await Product.count({ where: { userId: userId } });
+
+            const categories = await Category.findAll();
+            for (const category of categories) {
+                const countProducts = await Product.count({where: {userId: userId, categoryId: category.id}});
+                productStat.byCategory.push ({
+                    id: category.id,
+                    name: category.name,
+                    countProducts: countProducts,
+                });
             }
 
-            // Count the number of products that match the provided criteria.
-            const count = await Product.count({ where: whereClause });
+            const storageLocations = await Category.findAll();
+            for (const storageLocation of storageLocations) {
+                const countProducts = await Product.count({where: {userId: userId, storageLocationId: storageLocation.id}});
+                productStat.byStorageLocation.push ({
+                    id: storageLocation.id,
+                    name: storageLocation.name,
+                    countProducts: countProducts,
+                });
+            }
 
-            return res.json({ count });
+            return res.json({ productStat });
         } catch (error) {
             next(ApiError.badRequest('Error fetching product count'));
         }
