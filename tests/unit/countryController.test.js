@@ -1,61 +1,127 @@
-const request = require('supertest');
-const app = require('../../index');
 const { Country } = require('../../src/models/models');
-const ApiError = require('../../src/error/ApiError');
 const CountryController = require('../../src/controllers/countryController');
-const { Sequelize } = require('sequelize');
+const ApiError = require('../../src/error/ApiError');
 
-beforeAll(() => {
-    Sequelize.options.logging = false;
-});
-
-// Create fake test data for testing
-const testCountry = { name: 'Test Country' };
+// Mock the Country model and its methods
+jest.mock('../../src/models/models');
 
 describe('CountryController', () => {
-    beforeAll(async () => {
-        // Prepare the test database before running the tests
-        await Country.sync({ force: true });
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
-    it('should create a new country', async () => {
-        const response = await request(app)
-            .post('/api/countries')
-            .send(testCountry);
+    describe('createCountry', () => {
+        it('should create a new country', async () => {
+            const req = { body: { name: 'Test Country' } };
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
 
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('name', testCountry.name);
+            // Mock the create method of Country model
+            Country.create.mockResolvedValue({ id: 1, name: 'Test Country' });
+
+            await CountryController.createCountry(req, res);
+
+            expect(Country.create).toHaveBeenCalledWith({ name: 'Test Country' });
+            expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'Test Country' });
+        });
+
+        it('should handle errors when creating a country', async () => {
+            const req = { body: { name: 'Test Country' } };
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
+            const next = jest.fn();
+
+            // Mock the create method of Country model to throw an error
+            Country.create.mockRejectedValue(new Error('Mocked error'));
+
+            await CountryController.createCountry(req, res, next);
+
+            expect(Country.create).toHaveBeenCalledWith({ name: 'Test Country' });
+            expect(next).toHaveBeenCalledWith(ApiError.internal('Could not create the country.'));
+        });
     });
 
-    it('should get all countries', async () => {
-        // Add a few countries for testing the retrieval of all countries
-        await Country.bulkCreate([
-            { name: 'Country 1' },
-            { name: 'Country 2' },
-        ]);
+    describe('getAllCountries', () => {
+        it('should fetch all countries', async () => {
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
 
-        const response = await request(app).get('/api/countries');
+            // Mock the findAll method of Country model
+            Country.findAll.mockResolvedValue([{ id: 1, name: 'Country 1' }, { id: 2, name: 'Country 2' }]);
 
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveLength(2); // Expecting two countries to be retrieved
+            await CountryController.getAllCountries({}, res);
+
+            expect(Country.findAll).toHaveBeenCalled();
+            expect(res.json).toHaveBeenCalledWith([
+                { id: 1, name: 'Country 1' },
+                { id: 2, name: 'Country 2' },
+            ]);
+        });
+
+        it('should handle errors when fetching all countries', async () => {
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
+            const next = jest.fn();
+
+            // Mock the findAll method of Country model to throw an error
+            Country.findAll.mockRejectedValue(new Error('Mocked error'));
+
+            await CountryController.getAllCountries({}, res, next);
+
+            expect(Country.findAll).toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(ApiError.internal('Could not fetch the list of countries.'));
+        });
     });
 
-    it('should remove a country', async () => {
-        // Create a test country
-        const createdCountry = await Country.create(testCountry);
+    describe('removeCountry', () => {
+        it('should remove a country with valid id', async () => {
+            const req = { params: { id: 1 } };
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
 
-        const response = await request(app)
-            .delete(`/api/countries/${createdCountry.id}`);
+            // Mock the destroy method of Country model
+            Country.destroy.mockResolvedValue(1);
 
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('message', 'Country was deleted successfully!');
-    });
+            await CountryController.removeCountry(req, res);
 
-    it('should return an error when removing a non-existing country', async () => {
-        const response = await request(app)
-            .delete('/api/countries/999999'); // Trying to delete a non-existing country
+            expect(Country.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
+            expect(res.json).toHaveBeenCalledWith({ message: 'Country was deleted successfully!' });
+        });
 
-        expect(response.statusCode).toBe(200); // Assume 200 OK is returned if the country is not found
-        expect(response.body).toHaveProperty('message', 'Cannot delete Country with id=999999. Maybe Country was not found!');
+        it('should handle non-existing country id during removal', async () => {
+            const req = { params: { id: 999 } };
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
+
+            // Mock the destroy method of Country model with 0 rows affected
+            Country.destroy.mockResolvedValue(0);
+
+            await CountryController.removeCountry(req, res);
+
+            expect(Country.destroy).toHaveBeenCalledWith({ where: { id: 999 } });
+            expect(res.json).toHaveBeenCalledWith({ message: 'Cannot delete Country with id=999. Maybe Country was not found!' });
+        });
+
+        it('should handle errors when removing a country', async () => {
+            const req = { params: { id: 1 } };
+            const res = {
+                json: jest.fn().mockReturnThis(),
+            };
+            const next = jest.fn();
+
+            // Mock the destroy method of Country model to throw an error
+            Country.destroy.mockRejectedValue(new Error('Mocked error'));
+
+            await CountryController.removeCountry(req, res, next);
+
+            expect(Country.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
+            expect(next).toHaveBeenCalledWith(ApiError.internal('Could not delete Country with id= 1'));
+        });
     });
 });

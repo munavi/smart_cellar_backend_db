@@ -2,7 +2,7 @@ const { Country } = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class CountryController {
-    async createCountry(req, res) {
+    async createCountry(req, res, next) {
         try {
             const { name } = req.body;
             const newCountry = await Country.create({ name });
@@ -12,7 +12,7 @@ class CountryController {
         }
     }
 
-    async getAllCountries(req, res) {
+    async getAllCountries(req, res, next) {
         try {
             const countries = await Country.findAll();
             return res.json(countries);
@@ -21,7 +21,7 @@ class CountryController {
         }
     }
 
-    async removeCountry(req, res) {
+    async removeCountry(req, res, next) {
         try {
             const { id } = req.params;
             const numDeleted = await Country.destroy({ where: { id } });
@@ -31,7 +31,7 @@ class CountryController {
                 return res.json({ message: `Cannot delete Country with id=${id}. Maybe Country was not found!` });
             }
         } catch (error) {
-            return next(ApiError.internal(`Could not delete Country with id= ${id}`));
+            return next(ApiError.internal(`Could not delete Country with id= ${req.params.id}`));
         }
     };
 }
