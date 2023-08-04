@@ -1,4 +1,3 @@
-const uuid = require('uuid')
 const {Profile, Country} = require('../models/models')
 const {ApiError} = require('../error/ApiError')
 

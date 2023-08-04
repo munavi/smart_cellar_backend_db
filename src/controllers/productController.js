@@ -1,6 +1,5 @@
 const { Product, User, Profile, Category, StorageLocation} = require('../models/models');
 const { ApiError } = require('../error/ApiError');
-const { Op } = require('sequelize');
 
 const productSortOptions = [
     ['date', 'ASC'],
