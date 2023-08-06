@@ -1,15 +1,27 @@
-const {Profile, Country} = require('../models/models')
-const {ApiError} = require('../error/ApiError')
+const {Profile, Country, User, Currency, Product} = require('../models/models')
+const ApiError = require('../error/ApiError');
 
 class ProfileController {
     async create(req, res, next){
         try {
-            const {firstname, lastname, countryId, currencyId}  = req.body
-            const profile = await Profile.create({firstname, lastname, countryId, currencyId})
-
+            const {firstname, lastname, userId, countryId, currencyId}  = req.body;
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            const country = await Country.findByPk(countryId);
+            if (!country) {
+                return res.status(404).json({ error: 'Country not found' });
+            }
+            const currency = await Currency.findByPk(currencyId);
+            if (!currency) {
+                return res.status(404).json({ error: 'Currency not found' });
+            }
+            const profile = await Profile.create({firstname, lastname, userId, countryId, currencyId})
+            await profile.reload();
             return res.json(profile)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
+        } catch (error) {
+            next(ApiError.internal('Error creating profile'));
         }
     }
 
@@ -29,28 +41,35 @@ class ProfileController {
 
             const profiles = await Profile.findAndCountAll({ where: whereOptions, limit, offset });
             return res.json(profiles);
-        } catch (e) {
-            next(ApiError.badRequest(e.message));
+        } catch (error) {
+            next(ApiError.internal('Could not fetch the list of profiles.'));
         }
     }
 
     async getOne(req, res, next) {
         const {id} = req.params;
         try {
-            const profile = await Profile.findOne({where: {userId: id}});
+            const profile = await Profile.findOne({where: {Id: id}});
             return res.json(profile);
-        } catch (e) {
-            next(ApiError.badRequest(e.message));
+        } catch (error) {
+            next(ApiError.internal(`Could not fetch the Profile with id=${req.params.id}`));
         }
     }
 
     async removeOne(req, res, next) {
         const { id } = req.params;
         try {
-            const profile = await Profile.destroy({ where: { id } });
-            return res.json(profile);
-        } catch (e) {
-            next(ApiError.badRequest(e.message));
+            const deletedProfile = await Profile.findByPk(id);
+            if (!deletedProfile) {
+                return res.status(404).json({ error: 'Profile not found' });
+            }
+            const ret = await Profile.destroy({ where: { Id: id} });
+            if(ret === 1){
+                return res.status(200).json({ message: 'Profile was deleted successfully!'});
+            }
+            return res.json(ret);
+        } catch (error) {
+            next(ApiError.internal(`Could not delete Profile with id=${req.params.id}`));
         }
     }
 
@@ -69,8 +88,8 @@ class ProfileController {
                 }
 
                 return res.json(updatedProfile);
-            } catch (e) {
-                next(ApiError.badRequest(e.message));
+            } catch (error) {
+                next(ApiError.internal(`Could not update the profile with id=${req.params.id}`));
             }
         }
     }
