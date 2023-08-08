@@ -43,12 +43,10 @@ class UserController {
             if (!user) {
                 throw ApiError.internal('User not found');
             }
-
             const comparePassword = bcrypt.compareSync(password, user.password);
             if (!comparePassword) {
                 throw ApiError.internal('Incorrect password is specified');
             }
-
             const token = generateJwt(user.id, user.email);
             return res.json({ token, id: user.id });
         } catch (error) {

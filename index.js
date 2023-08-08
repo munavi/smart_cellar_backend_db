@@ -18,26 +18,37 @@ app.use('/api', router);
 app.use(errorHandler);
 
 const start = async () => {
-    try {
-        sequelize.options.logging = (message) => {
-            logger.info(message);
-        }
+    sequelize.options.logging = (message) => {
+        logger.info(message);
+    }
 
+    try {
         await sequelize.authenticate();
         await sequelize.sync({ force: true });
-
         await seedData();
 
-        app.listen(PORT, () => {
+        const server = app.listen(PORT, () => {
             logger.info(`Server started on port ${PORT}`);
         });
+        process.on('SIGINT', async () => {
+            try {
+                await sequelize.close();
+                server.close(() => {
+                    logger.info('Server has been stopped');
+                    process.exit(0);
+                });
+            } catch (e) {
+                logger.error('Error while closing server:', e);
+                process.exit(1);
+            }
+        });
+        return server;
     } catch (e) {
         logger.error(e);
     }
 };
 
-
 start();
 
-module.exports = { start};
+module.exports = start;
 

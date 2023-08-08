@@ -7,7 +7,7 @@
     "dev": "nodemon index.js",
     "test": "jest",
     "test:unit": "jest --testPathPattern=unit",
-    "test:integration": "jest --testPathPattern=integration --detectOpenHandles"
+    "test:integration": "jest --testPathPattern=integration"
   },
   "repository": {
     "type": "git",
