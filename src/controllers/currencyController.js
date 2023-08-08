@@ -1,10 +1,14 @@
-const { Currency } = require('../models/models');
+const { Currency, Category} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class CurrencyController {
     async create(req, res, next) {
         try {
             const { name } = req.body;
+            const candidate = await Currency.findOne({ where: { name } });
+            if (candidate) {
+                throw ApiError.badRequest('Currency with this name already exists');
+            }
             const currency = await Currency.create({ name });
             return res.json(currency);
         } catch (error) {

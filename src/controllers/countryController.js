@@ -1,10 +1,14 @@
-const { Country } = require('../models/models');
+const { Country, User} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class CountryController {
     async createCountry(req, res, next) {
         try {
             const { name } = req.body;
+            const candidate = await Country.findOne({ where: { name } });
+            if (candidate) {
+                throw ApiError.badRequest('Country with this name already exists');
+            }
             const newCountry = await Country.create({ name });
             return res.json(newCountry);
         } catch (error) {

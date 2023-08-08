@@ -1,10 +1,14 @@
-const { StorageLocation } = require('../models/models');
+const { StorageLocation, Currency} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class StorageLocationController {
     async create(req, res, next) {
         try {
             const { name } = req.body;
+            const candidate = await StorageLocation.findOne({ where: { name } });
+            if (candidate) {
+                throw ApiError.badRequest('StorageLocation with this name already exists');
+            }
             const storageLocation = await StorageLocation.create({ name });
             return res.json(storageLocation);
         } catch (error) {
