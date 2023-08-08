@@ -1,5 +1,6 @@
 const { Product, User, Category, StorageLocation  } = require('../../src/models/models');
 const faker = require('faker');
+const logger = require('../../logger');
 
 function generateRandomProductName() {
     const maxLength = 50;
@@ -41,12 +42,11 @@ async function seedProducts(createdUsers, createdCategories, createdStorageLocat
             };
             profilesToAdd.push(profile);
         }
-        // console.log(profilesToAdd)
 
         await Product.bulkCreate(profilesToAdd);
-        console.log('The Products table has been successfully populated with data.');
-    } catch (error) {
-        console.error('Error filling the Products table:', error);
+        logger.info('The Products table has been successfully populated with data.');
+    } catch (e) {
+        logger.error('Error filling the Products table:', e);
     }
 }
 

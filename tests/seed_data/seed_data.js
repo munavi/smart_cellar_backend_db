@@ -5,6 +5,7 @@ const seedCountries = require("./seed_countries");
 const seedCurrencies = require("./seed_currencies");
 const seedCategories = require("./seed_categories");
 const seedStorageLocations = require("./seed_storage_locations");
+const logger = require('../../logger');
 
 async function seedData() {
     try {
@@ -17,9 +18,9 @@ async function seedData() {
         await seedProfiles(createdUsers, createdCountries, createdCurrencies);
         await seedProducts(createdUsers, createdCategories, createdStorageLocations);
 
-        console.log('The Seed Data has been successfully populated with data.');
-    } catch (error) {
-        console.error('Error seeding Data', error);
+        logger.info('The Seed Data has been successfully populated with data.');
+    } catch (e) {
+        logger.error('Error seeding Data', e);
     }
 }
 

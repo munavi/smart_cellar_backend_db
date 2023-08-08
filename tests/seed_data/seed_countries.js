@@ -1,4 +1,5 @@
 const { Country } = require('../../src/models/models');
+const logger = require("../../logger");
 
 async function seedCountries() {
     try {
@@ -21,10 +22,10 @@ async function seedCountries() {
         ];
 
         const createdCountry = await Country.bulkCreate(countriesToAdd);
-        console.log('The Countries table has been successfully populated with data.');
+        logger.info('The Countries table has been successfully populated with data.');
         return createdCountry;
-    } catch (error) {
-        console.error('Error filling the Countries table:', error);
+    } catch (e) {
+        logger.error('Error filling the Countries table:', e);
     }
 }
 
