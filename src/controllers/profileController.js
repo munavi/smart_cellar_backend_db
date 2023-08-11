@@ -49,7 +49,7 @@ class ProfileController {
     async getOne(req, res, next) {
         const {id} = req.params;
         try {
-            const profile = await Profile.findOne({where: {Id: id}});
+            const profile = await Profile.findOne({where: {userId: id}});
             return res.json(profile);
         } catch (error) {
             next(ApiError.internal(`Could not fetch the Profile with id=${req.params.id}`));
