@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../../src/models/models');
+const logger = require('../../logger');
 
 async function seedUsers() {
     try {
@@ -28,10 +29,10 @@ async function seedUsers() {
         }));
 
         const createdUsers = await User.bulkCreate(hashedUsersToAdd);
-        console.log('The Users table has been successfully populated with data.');
+        logger.info('The Users table has been successfully populated with data.');
         return createdUsers;
     } catch (error) {
-        console.error('Error filling the Users table:', error);
+        logger.error('Error filling the Users table:', error);
     }
 }
 

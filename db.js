@@ -7,6 +7,7 @@ module.exports = new Sequelize(
     {
         dialect: 'postgres',
         host: process.env.PG_HOST,
-        port: process.env.PG_PORT
+        port: process.env.PG_PORT,
+        logging: true,
     }
 )
