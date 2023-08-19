@@ -2,25 +2,13 @@ stages:
   - test
   - deploy
 
-cache:
-  key: "$CI_COMMIT_REF_SLUG"
-  paths:
-    - node_modules/
 
-install-dependencies-job:
+unit-test-job:
   stage: test
   image: node:latest
   script:
     - echo "Installing dependencies..."
     - npm ci
-  artifacts:
-    paths:
-      - node_modules/
-  allow_failure: false
-
-unit-test-job:
-  stage: test
-  script:
     - echo "Running unit tests..."
     - npm run test:unit
     - echo "Code coverage is 90%"
