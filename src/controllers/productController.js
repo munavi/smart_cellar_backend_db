@@ -1,6 +1,5 @@
 const { Product, User, Profile, Category, StorageLocation} = require('../models/models');
 const { ApiError } = require('../error/ApiError');
-const { Op } = require('sequelize');
 
 const productSortOptions = [
     ['date', 'ASC'],
@@ -99,7 +98,7 @@ class ProductController {
         }
     }
 
-     async update(req, res, next) {
+    async update(req, res, next) {
         try {
             const { id } = req.params;
             const { body } = req;

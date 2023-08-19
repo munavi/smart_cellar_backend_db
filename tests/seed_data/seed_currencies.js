@@ -1,4 +1,5 @@
 const { Currency } = require('../../src/models/models');
+const logger = require('../../logger')
 
 async function seedCurrencies() {
     try {
@@ -21,10 +22,10 @@ async function seedCurrencies() {
         ];
 
         const createdCurrencies = await Currency.bulkCreate(currenciesToAdd);
-        console.log('The Currencies table has been successfully populated with data.');
+        logger.info('The Currencies table has been successfully populated with data.');
         return createdCurrencies;
     } catch (error) {
-        console.error('Error filling the Currencies table:', error);
+        logger.error('Error filling the Currencies table:', error);
     }
 }
 

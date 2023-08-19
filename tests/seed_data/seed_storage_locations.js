@@ -1,4 +1,5 @@
 const { StorageLocation } = require('../../src/models/models');
+const logger = require('../../logger');
 
 async function seedStorageLocations() {
     try {
@@ -37,10 +38,10 @@ async function seedStorageLocations() {
         ];
 
         const createdStorageLocations = await StorageLocation.bulkCreate(storageLocationsToAdd);
-        console.log('The StorageLocations table has been successfully populated with data.');
+        logger.info('The StorageLocations table has been successfully populated with data.');
         return createdStorageLocations
     } catch (error) {
-        console.error('Error filling the StorageLocations table:', error);
+        logger.error('Error filling the StorageLocations table:', error);
     }
 }
 

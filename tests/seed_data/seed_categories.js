@@ -1,4 +1,5 @@
 const { Category } = require('../../src/models/models');
+const logger = require("../../logger");
 
 async function seedCategories() {
     try {
@@ -36,11 +37,11 @@ async function seedCategories() {
             }
         ];
 
-        const createdCategories =await Category.bulkCreate(categoriesToAdd);
-        console.log('The Categories table has been successfully populated with data.');
+        const createdCategories = await Category.bulkCreate(categoriesToAdd);
+        logger.info('The Categories table has been successfully populated with data.');
         return createdCategories;
-    } catch (error) {
-        console.error('Error filling the Categories table:', error);
+    } catch (e) {
+        logger.error('Error filling the Categories table:', e);
     }
 }
 

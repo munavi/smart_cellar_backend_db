@@ -1,5 +1,7 @@
 const {Profile, User, Country, Currency} = require("../../src/models/models");
 const faker = require('faker');
+const logger = require('../../logger');
+
 async function seedProfiles(createdUsers, createdCountries, createdCurrencies) {
     try {
         const profilesToAdd = [];
@@ -23,9 +25,9 @@ async function seedProfiles(createdUsers, createdCountries, createdCurrencies) {
         }
 
         await Profile.bulkCreate(profilesToAdd);
-        console.log('The Profiles table has been successfully populated with data.');
+        logger.info('The Profiles table has been successfully populated with data.');
     } catch (error) {
-        console.error('Error filling the Profiles table:', error);
+        logger.error('Error filling the Profiles table:', error);
         throw error;
     }
 }
