@@ -20,7 +20,7 @@ describe('StorageLocationController', () => {
             // Mock the create method of StorageLocation model
             StorageLocation.create.mockResolvedValue({ id: 1, name: 'Test Location' });
 
-            await StorageLocationController.create(req, res);
+            await StorageLocationController.createStorageLocation(req, res);
 
             expect(StorageLocation.create).toHaveBeenCalledWith({ name: 'Test Location' });
             expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'Test Location' });
@@ -36,7 +36,7 @@ describe('StorageLocationController', () => {
             // Mock the create method of StorageLocation model to throw an error
             StorageLocation.create.mockRejectedValue(new Error('Mocked error'));
 
-            await StorageLocationController.create(req, res, next);
+            await StorageLocationController.createStorageLocation(req, res, next);
 
             expect(StorageLocation.create).toHaveBeenCalledWith({ name: 'Test Location' });
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not create the storage location.'));
@@ -52,7 +52,7 @@ describe('StorageLocationController', () => {
             // Mock the findAll method of StorageLocation model
             StorageLocation.findAll.mockResolvedValue([{ id: 1, name: 'Location 1' }, { id: 2, name: 'Location 2' }]);
 
-            await StorageLocationController.getAll({}, res);
+            await StorageLocationController.getAllStorageLocations({}, res);
 
             expect(StorageLocation.findAll).toHaveBeenCalled();
             expect(res.json).toHaveBeenCalledWith([
@@ -70,7 +70,7 @@ describe('StorageLocationController', () => {
             // Mock the findAll method of StorageLocation model to throw an error
             StorageLocation.findAll.mockRejectedValue(new Error('Mocked error'));
 
-            await StorageLocationController.getAll({}, res, next);
+            await StorageLocationController.getAllStorageLocations({}, res, next);
 
             expect(StorageLocation.findAll).toHaveBeenCalled();
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not fetch the list of storage locations.'));
@@ -87,7 +87,7 @@ describe('StorageLocationController', () => {
             // Mock the destroy method of StorageLocation model
             StorageLocation.destroy.mockResolvedValue(1);
 
-            await StorageLocationController.removeOne(req, res);
+            await StorageLocationController.removeStorageLocation(req, res);
 
             expect(StorageLocation.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
             expect(res.json).toHaveBeenCalledWith({ message: 'Storage location was deleted successfully!' });
@@ -102,7 +102,7 @@ describe('StorageLocationController', () => {
             // Mock the destroy method of StorageLocation model with 0 rows affected
             StorageLocation.destroy.mockResolvedValue(0);
 
-            await StorageLocationController.removeOne(req, res);
+            await StorageLocationController.removeStorageLocation(req, res);
 
             expect(StorageLocation.destroy).toHaveBeenCalledWith({ where: { id: 999 } });
             expect(res.json).toHaveBeenCalledWith({ message: 'Cannot delete Storage location with id=999. Maybe Storage location was not found!' });
@@ -118,7 +118,7 @@ describe('StorageLocationController', () => {
             // Mock the destroy method of StorageLocation model to throw an error
             StorageLocation.destroy.mockRejectedValue(new Error('Mocked error'));
 
-            await StorageLocationController.removeOne(req, res, next);
+            await StorageLocationController.removeStorageLocation(req, res, next);
 
             expect(StorageLocation.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not delete Storage location with id=1'));

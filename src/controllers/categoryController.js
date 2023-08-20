@@ -2,7 +2,7 @@ const { Category, Country} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class CategoryController {
-    async create(req, res, next) {
+    async createCategory(req, res, next) {
         try {
             const { name } = req.body;
             const candidate = await Category.findOne({ where: { name } });
@@ -16,7 +16,7 @@ class CategoryController {
         }
     }
 
-    async getAll(req, res, next) {
+    async getAllCategories(req, res, next) {
         try {
             const categories = await Category.findAll();
             return res.json(categories);
@@ -25,7 +25,7 @@ class CategoryController {
         }
     }
 
-    async removeOne(req, res, next) {
+    async removeCategory(req, res, next) {
         try {
             const { id } = req.params;
             const numDeleted = await Category.destroy({ where: { id } });

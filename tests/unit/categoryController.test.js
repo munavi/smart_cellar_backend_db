@@ -21,7 +21,7 @@ describe('CategoryController', () => {
             // Mock the create method of Category model
             Category.create.mockResolvedValue({ id: 1, name: 'Test Category' });
 
-            await CategoryController.create(req, res);
+            await CategoryController.createCategory(req, res);
 
             expect(Category.create).toHaveBeenCalledWith({ name: 'Test Category' });
             expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'Test Category' });
@@ -37,7 +37,7 @@ describe('CategoryController', () => {
             // Mock the create method of Category model to throw an error
             Category.create.mockRejectedValue(new Error('Mocked error'));
 
-            await CategoryController.create(req, res, next);
+            await CategoryController.createCategory(req, res, next);
 
             expect(Category.create).toHaveBeenCalledWith({ name: 'Test Category' });
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not create the category.'));
@@ -53,7 +53,7 @@ describe('CategoryController', () => {
             // Mock the findAll method of Category model
             Category.findAll.mockResolvedValue([{ id: 1, name: 'Category 1' }, { id: 2, name: 'Category 2' }]);
 
-            await CategoryController.getAll({}, res);
+            await CategoryController.getAllCategories({}, res);
 
             expect(Category.findAll).toHaveBeenCalled();
             expect(res.json).toHaveBeenCalledWith([
@@ -71,7 +71,7 @@ describe('CategoryController', () => {
             // Mock the findAll method of Category model to throw an error
             Category.findAll.mockRejectedValue(new Error('Mocked error'));
 
-            await CategoryController.getAll({}, res, next);
+            await CategoryController.getAllCategories({}, res, next);
 
             expect(Category.findAll).toHaveBeenCalled();
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not fetch the list of categories.'));
@@ -88,7 +88,7 @@ describe('CategoryController', () => {
             // Mock the destroy method of Category model
             Category.destroy.mockResolvedValue(1);
 
-            await CategoryController.removeOne(req, res);
+            await CategoryController.removeCategory(req, res);
 
             expect(Category.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
             expect(res.json).toHaveBeenCalledWith({ message: 'Category was deleted successfully!' });
@@ -103,7 +103,7 @@ describe('CategoryController', () => {
             // Mock the destroy method of Category model with 0 rows affected
             Category.destroy.mockResolvedValue(0);
 
-            await CategoryController.removeOne(req, res);
+            await CategoryController.removeCategory(req, res);
 
             expect(Category.destroy).toHaveBeenCalledWith({ where: { id: 999 } });
             expect(res.json).toHaveBeenCalledWith({ message: 'Cannot delete Category with id=999. Maybe Category was not found!' });
@@ -119,7 +119,7 @@ describe('CategoryController', () => {
             // Mock the destroy method of Category model to throw an error
             Category.destroy.mockRejectedValue(new Error('Mocked error'));
 
-            await CategoryController.removeOne(req, res, next);
+            await CategoryController.removeCategory(req, res, next);
 
             expect(Category.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not delete Category with id=1'));

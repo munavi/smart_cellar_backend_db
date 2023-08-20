@@ -20,7 +20,7 @@ describe('CurrencyController', () => {
             // Mock the create method of Currency model
             Currency.create.mockResolvedValue({ id: 1, name: 'Test Currency' });
 
-            await CurrencyController.create(req, res);
+            await CurrencyController.createCurrency(req, res);
 
             expect(Currency.create).toHaveBeenCalledWith({ name: 'Test Currency' });
             expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'Test Currency' });
@@ -36,7 +36,7 @@ describe('CurrencyController', () => {
             // Mock the create method of Currency model to throw an error
             Currency.create.mockRejectedValue(new Error('Mocked error'));
 
-            await CurrencyController.create(req, res, next);
+            await CurrencyController.createCurrency(req, res, next);
 
             expect(Currency.create).toHaveBeenCalledWith({ name: 'Test Currency' });
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not create the currency.'));
@@ -52,7 +52,7 @@ describe('CurrencyController', () => {
             // Mock the findAll method of Currency model
             Currency.findAll.mockResolvedValue([{ id: 1, name: 'Currency 1' }, { id: 2, name: 'Currency 2' }]);
 
-            await CurrencyController.getAll({}, res);
+            await CurrencyController.getAllCurrencies({}, res);
 
             expect(Currency.findAll).toHaveBeenCalled();
             expect(res.json).toHaveBeenCalledWith([
@@ -70,7 +70,7 @@ describe('CurrencyController', () => {
             // Mock the findAll method of Currency model to throw an error
             Currency.findAll.mockRejectedValue(new Error('Mocked error'));
 
-            await CurrencyController.getAll({}, res, next);
+            await CurrencyController.getAllCurrencies({}, res, next);
 
             expect(Currency.findAll).toHaveBeenCalled();
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not fetch the list of currencies.'));
@@ -87,7 +87,7 @@ describe('CurrencyController', () => {
             // Mock the destroy method of Currency model
             Currency.destroy.mockResolvedValue(1);
 
-            await CurrencyController.removeOne(req, res);
+            await CurrencyController.removeCurrency(req, res);
 
             expect(Currency.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
             expect(res.json).toHaveBeenCalledWith({ message: 'Currency was deleted successfully!' });
@@ -102,7 +102,7 @@ describe('CurrencyController', () => {
             // Mock the destroy method of Currency model with 0 rows affected
             Currency.destroy.mockResolvedValue(0);
 
-            await CurrencyController.removeOne(req, res);
+            await CurrencyController.removeCurrency(req, res);
 
             expect(Currency.destroy).toHaveBeenCalledWith({ where: { id: 999 } });
             expect(res.json).toHaveBeenCalledWith({ message: 'Cannot delete Currency with id=999. Maybe Currency was not found!' });
@@ -118,7 +118,7 @@ describe('CurrencyController', () => {
             // Mock the destroy method of Currency model to throw an error
             Currency.destroy.mockRejectedValue(new Error('Mocked error'));
 
-            await CurrencyController.removeOne(req, res, next);
+            await CurrencyController.removeCurrency(req, res, next);
 
             expect(Currency.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
             expect(next).toHaveBeenCalledWith(ApiError.internal('Could not delete Currency with id=1'));

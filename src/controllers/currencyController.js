@@ -2,7 +2,7 @@ const { Currency, Category} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class CurrencyController {
-    async create(req, res, next) {
+    async createCurrency(req, res, next) {
         try {
             const { name } = req.body;
             const candidate = await Currency.findOne({ where: { name } });
@@ -16,7 +16,7 @@ class CurrencyController {
         }
     }
 
-    async getAll(req, res, next) {
+    async getAllCurrencies(req, res, next) {
         try {
             const currencies = await Currency.findAll();
             return res.json(currencies);
@@ -25,7 +25,7 @@ class CurrencyController {
         }
     }
 
-    async removeOne(req, res, next) {
+    async removeCurrency(req, res, next) {
         try {
             const { id } = req.params;
             const numDeleted = await Currency.destroy({ where: { id } });

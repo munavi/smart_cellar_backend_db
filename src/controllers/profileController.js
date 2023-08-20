@@ -2,7 +2,7 @@ const {Profile, Country, User, Currency, Product} = require('../models/models')
 const ApiError = require('../error/ApiError');
 
 class ProfileController {
-    async create(req, res, next){
+    async createProfile(req, res, next){
         try {
             const {firstname, lastname, userId, countryId, currencyId}  = req.body;
             const user = await User.findByPk(userId);
@@ -26,7 +26,7 @@ class ProfileController {
     }
 
 
-    async getAll(req, res, next) {
+    async getAllProfiles(req, res, next) {
         try {
             const { currencyId, countryId, limit = 20, page = 1 } = req.query;
             const offset = (page - 1) * limit;
@@ -46,7 +46,7 @@ class ProfileController {
         }
     }
 
-    async getOne(req, res, next) {
+    async getOneProfile(req, res, next) {
         const {id} = req.params;
         try {
             const profile = await Profile.findOne({where: {userId: id}});
@@ -56,7 +56,7 @@ class ProfileController {
         }
     }
 
-    async removeOne(req, res, next) {
+    async removeProfile(req, res, next) {
         const { id } = req.params;
         try {
             const deletedProfile = await Profile.findByPk(id);
@@ -73,7 +73,7 @@ class ProfileController {
         }
     }
 
-        async updateOne(req, res, next) {
+        async updateProfile(req, res, next) {
             const { id } = req.params;
             const { body } = req;
 

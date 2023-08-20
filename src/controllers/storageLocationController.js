@@ -2,7 +2,7 @@ const { StorageLocation, Currency} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class StorageLocationController {
-    async create(req, res, next) {
+    async  createStorageLocation(req, res, next) {
         try {
             const { name } = req.body;
             const candidate = await StorageLocation.findOne({ where: { name } });
@@ -16,7 +16,7 @@ class StorageLocationController {
         }
     }
 
-    async getAll(req, res, next) {
+    async getAllStorageLocations(req, res, next) {
         try {
             const storageLocations = await StorageLocation.findAll();
             return res.json(storageLocations);
@@ -25,7 +25,7 @@ class StorageLocationController {
         }
     }
 
-    async removeOne(req, res, next) {
+    async removeStorageLocation(req, res, next) {
         try {
             const { id } = req.params;
             const numDeleted = await StorageLocation.destroy({ where: { id } });

@@ -10,7 +10,7 @@ const productSortOptions = [
 ];
 
 class ProductController {
-    async create(req, res, next) {
+    async createProduct(req, res, next) {
         try {
             const { name, quantity, date, categoryId, storageLocationId, userId } = req.body;
 
@@ -98,7 +98,7 @@ class ProductController {
         }
     }
 
-    async update(req, res, next) {
+    async updateProduct(req, res, next) {
         try {
             const { id } = req.params;
             const { body } = req;
@@ -117,7 +117,7 @@ class ProductController {
         }
     }
 
-    async removeOne(req, res, next) {
+    async removeProduct(req, res, next) {
         try {
             const { id } = req.params;
             const deletedProduct = await Product.findByPk(id);
