@@ -9,6 +9,11 @@ unit-test-job:
   script:
     - echo "Installing dependencies..."
     - npm install
+    - echo "Create Database..."
+    - docker run --name my-postgres-db -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=mydatabase -p 5432:5432 -d postgres:latest
+    - echo "Creating .env file..."
+    - echo "SECRET_KEY=MyNewSecretKey123!@#" > .env
+    - echo "PG_DB_URL=postgres://root:mysecretpassword@my-postgres-db:5432/mydatabase" >> .env
     - echo "Running unit tests..."
     - npm run test:unit
     - echo "Code coverage is 90%"
