@@ -39,6 +39,13 @@ To run the project, please use the following command:
 npm run dev
 ```
 
+## Usage with Docker
+
+```bash
+docker build -t smart-cellar-backend .
+docker run -d -p 3000:3000 --name backend-smart-cellar-container smart-cellar-backend
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
