@@ -19,6 +19,18 @@ Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-
 ```bash
 npm install
 ```
+## Environment Variables
+
+Before running the project, you need to set up environment variables. Create a .env file in the root directory of the project and add the following variables:
+```bash
+SERVER=http://localhost:4000
+PORT=4000
+PG_DB_URL=postgres://username:password@localhost:5432/database_name
+SECRET_KEY=mysecretkey
+```
+Replace username, password, and database_name with your PostgreSQL credentials and database name. Also, set a value for SECRET_KEY which will be used for encryption and security purposes.
+
+Make sure to keep your .env file secure and do not share sensitive information.
 
 ## Usage
 To run the project, please use the following command:
