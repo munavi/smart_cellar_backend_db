@@ -31,7 +31,7 @@ async function seedProducts(createdUsers, createdCategories, createdStorageLocat
         const UsersIds = createdUsers.map(user => user.id);
 
         const profilesToAdd = [];
-        for (let i = 0; i < 264; i++) {
+        for (let i = 0; i < 63; i++) {
             const profile = {
                 "name": generateRandomProductName(),
                 "quantity": generateRandomNumber(1, 30),
