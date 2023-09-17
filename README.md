@@ -1,6 +1,6 @@
 # Smart Cellar Backend + Database
 
-This code is an essential component of the bachelor's project on the topic "Smart Cellar: Development of a Full-Stack App for Reducing Food Waste and Promoting a Sustainable and Cost-Effective Lifestyle."
+This code is an essential component of the bachelor's project on the topic "Smart Cellar: development of a full-stack app for reducing food waste and promoting a sustainable and cost-effective lifestyle."
 
 
 ## Requirements
@@ -9,7 +9,7 @@ To ensure the proper functioning of the project, make sure the following require
 
 * [Node.js 18](https://nodejs.org/en/download): Ensure that you have Node.js version 18 or higher installed. This is necessary to provide the runtime environment for running the application.
 
-* [PostgreSQL](https://www.postgresql.org/download/): You need a PostgreSQL database to store the necessary data for the application. Make sure PostgreSQL is installed and properly configured.
+* [PostgreSQL 15](https://www.postgresql.org/download/): You need a PostgreSQL database version 15 to store the necessary data for the application. Make sure PostgreSQL 15 is installed and properly configured.
 
 Make sure these requirements are met before starting the project to ensure smooth execution of the application.
 
@@ -21,7 +21,7 @@ npm install
 ```
 ## Environment Variables
 
-Before running the project, you need to set up environment variables. Create a .env file in the root directory of the project and add the following variables:
+Before running the project, you need to set up environment variables. Create an .env file in the root directory of the project and add the following variables:
 ```bash
 SERVER=http://localhost:4000
 PORT=4000
