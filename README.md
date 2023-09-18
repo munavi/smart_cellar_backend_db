@@ -40,11 +40,16 @@ npm run dev
 ```
 
 ## Usage with Docker
+Install [Docker](https://www.docker.com/get-started/) if you don't have it installed.
 
+Execute the following commands in the command line at the project's root directory:
 ```bash
 docker build -t smart-cellar-backend .
+```
+```bash
 docker run -d -p 4000:4000 --name backend-smart-cellar-container smart-cellar-backend
 ```
+After successfully executing the commands, proceed to launch the frontend part [`smart_cellar`](https://gitlab.elektrotechnik.hs-augsburg.de/namu1848/smart_cellar)
 
 ## Contributing
 
