@@ -2,8 +2,20 @@
 
 This code is an essential component of the bachelor's project on the topic "Smart Cellar: development of a full-stack app for reducing food waste and promoting a sustainable and cost-effective lifestyle".
 
+## Usage with Docker
+Install [Docker](https://www.docker.com/get-started/) if you don't have it installed.
 
-## Requirements
+Execute the following commands in the command line at the project's root directory:
+```bash
+docker build -t smart-cellar-backend .
+```
+```bash
+docker run -d -p 4000:4000 --name backend-smart-cellar-container smart-cellar-backend
+```
+After successfully executing the commands, proceed to launch the frontend part [`smart_cellar`](https://gitlab.elektrotechnik.hs-augsburg.de/namu1848/smart_cellar)
+
+## Usage
+### Requirements
 
 To ensure the proper functioning of the project, make sure the following requirements are met:
 
@@ -13,13 +25,13 @@ To ensure the proper functioning of the project, make sure the following require
 
 Make sure these requirements are met before starting the project to ensure smooth execution of the application.
 
-## Installation
+### Installation
 Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install the project's dependencies.
 
 ```bash
 npm install
 ```
-## Environment Variables
+### Environment Variables
 
 Before running the project, you need to set up environment variables. Create an .env file in the root directory of the project and add the following variables:
 ```bash
@@ -32,24 +44,13 @@ Replace username, password, and database_name with your PostgreSQL credentials a
 
 Make sure to keep your .env file secure and do not share sensitive information.
 
-## Usage
+### How to run
 To run the project, please use the following command:
 
 ```bash
 npm run dev
 ```
 
-## Usage with Docker
-Install [Docker](https://www.docker.com/get-started/) if you don't have it installed.
-
-Execute the following commands in the command line at the project's root directory:
-```bash
-docker build -t smart-cellar-backend .
-```
-```bash
-docker run -d -p 4000:4000 --name backend-smart-cellar-container smart-cellar-backend
-```
-After successfully executing the commands, proceed to launch the frontend part [`smart_cellar`](https://gitlab.elektrotechnik.hs-augsburg.de/namu1848/smart_cellar)
 
 ## Contributing
 
